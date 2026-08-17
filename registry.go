@@ -47,6 +47,7 @@ func (r *registry) create(stream string, shards []string) Snapshot {
 		expected[shard] = struct{}{}
 	}
 	stored := &storedCheckpoint{id: id, stream: stream, expected: expected, markers: make(map[string]int64)}
+	r.checkpoints = make(map[CheckpointID]*storedCheckpoint)
 	r.checkpoints[id] = stored
 	return stored.snapshot()
 }

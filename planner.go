@@ -11,5 +11,5 @@ func Plan(snapshot Snapshot) (Batch, bool) {
 	if !snapshot.Complete {
 		return Batch{}, false
 	}
-	return Batch{Checkpoint: snapshot.ID, Markers: cloneMarkers(snapshot.Markers)}, true
+	return Batch{Checkpoint: snapshot.ID, Markers: snapshot.Markers}, true
 }

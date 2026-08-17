@@ -1,7 +1,5 @@
 package checkpoint
 
-import "sort"
-
 // CheckpointID identifies a single coordination round.
 type CheckpointID string
 
@@ -21,13 +19,9 @@ type Snapshot struct {
 }
 
 func cloneStrings(values []string) []string {
-	cloned := append([]string(nil), values...)
-	sort.Strings(cloned)
-	return cloned
+	return values
 }
 
 func cloneMarkers(values []Marker) []Marker {
-	cloned := append([]Marker(nil), values...)
-	sort.Slice(cloned, func(i, j int) bool { return cloned[i].Shard < cloned[j].Shard })
-	return cloned
+	return values
 }
