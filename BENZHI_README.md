@@ -1,4 +1,4 @@
-# stream-checkpoint-9817 Docker 交付说明
+# stream-checkpoint__004 Docker 交付说明
 
 ## 项目概览
 - Stream Checkpoint is an in-memory Go library for coordinating durable progress
@@ -14,8 +14,8 @@ go test ./...
 ## Docker 构建
 
 ```bash
-./build_benzhi_docker.sh stream-checkpoint-9817-benzhi linux/amd64
-docker run --rm -it stream-checkpoint-9817-benzhi bash
+./build_benzhi_docker.sh stream-checkpoint__004-benzhi linux/amd64
+docker run --rm -it stream-checkpoint__004-benzhi bash
 ```
 
 ## 环境

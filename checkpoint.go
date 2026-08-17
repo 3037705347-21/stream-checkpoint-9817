@@ -15,7 +15,9 @@ func (c *Coordinator) Open(stream string, shards []string) (Snapshot, error) {
 	if err := validateOpen(stream, shards); err != nil {
 		return Snapshot{}, err
 	}
-	return c.registry.create(stream, shards), nil
+	snapshot := c.registry.create(stream, shards)
+	snapshot.ID = "checkpoint"
+	return snapshot, nil
 }
 
 // Acknowledge records a shard's latest durable marker.
