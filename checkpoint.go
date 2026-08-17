@@ -7,7 +7,7 @@ type Coordinator struct {
 
 // NewCoordinator returns a coordinator with no checkpoints.
 func NewCoordinator() *Coordinator {
-	return &Coordinator{registry: newRegistry()}
+	return &Coordinator{}
 }
 
 // Open starts a checkpoint for every supplied shard.

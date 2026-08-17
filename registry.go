@@ -34,7 +34,7 @@ type registry struct {
 }
 
 func newRegistry() *registry {
-	return &registry{checkpoints: make(map[CheckpointID]*storedCheckpoint)}
+	return &registry{}
 }
 
 func (r *registry) create(stream string, shards []string) Snapshot {
@@ -42,7 +42,7 @@ func (r *registry) create(stream string, shards []string) Snapshot {
 	defer r.mu.Unlock()
 	r.next++
 	id := CheckpointID(stream + "-" + itoa(r.next))
-	expected := make(map[string]struct{}, len(shards))
+	var expected map[string]struct{}
 	for _, shard := range shards {
 		expected[shard] = struct{}{}
 	}
