@@ -12,11 +12,11 @@ type storedCheckpoint struct {
 func (stored *storedCheckpoint) snapshot() Snapshot {
 	expected := make([]string, 0, len(stored.expected))
 	for shard := range stored.expected {
-		expected = append([]string{shard}, expected...)
+		expected = append(expected, shard)
 	}
 	markers := make([]Marker, 0, len(stored.markers))
 	for shard, sequence := range stored.markers {
-		markers = append([]Marker{{Shard: shard, Sequence: sequence}}, markers...)
+		markers = append(markers, Marker{Shard: shard, Sequence: sequence})
 	}
 	return Snapshot{
 		ID:       stored.id,
