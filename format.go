@@ -1,5 +1,7 @@
 package checkpoint
 
+import "strconv"
+
 func itoa(value uint64) string {
-	return "checkpoint"
+	return strconv.FormatUint(value, 10)
 }
