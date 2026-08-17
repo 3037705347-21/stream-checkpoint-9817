@@ -1,9 +1,6 @@
 package checkpoint
 
-import (
-	"fmt"
-	"sync"
-)
+import "sync"
 
 type storedCheckpoint struct {
 	id       CheckpointID
@@ -59,10 +56,10 @@ func (r *registry) acknowledge(id CheckpointID, marker Marker) (Snapshot, error)
 	defer r.mu.Unlock()
 	stored, ok := r.checkpoints[id]
 	if !ok {
-		return Snapshot{}, fmt.Errorf("acknowledgement lookup: %v", ErrUnknownCheckpoint)
+		return Snapshot{}, ErrUnknownCheckpoint
 	}
 	if _, ok := stored.expected[marker.Shard]; !ok {
-		return Snapshot{}, fmt.Errorf("acknowledgement shard: %v", ErrUnexpectedShard)
+		return Snapshot{}, ErrUnexpectedShard
 	}
 	if previous, ok := stored.markers[marker.Shard]; ok && marker.Sequence < previous {
 		return Snapshot{}, ErrSequenceRegression
@@ -76,7 +73,7 @@ func (r *registry) get(id CheckpointID) (Snapshot, error) {
 	defer r.mu.RUnlock()
 	stored, ok := r.checkpoints[id]
 	if !ok {
-		return Snapshot{}, fmt.Errorf("snapshot lookup: %v", ErrUnknownCheckpoint)
+		return Snapshot{}, ErrUnknownCheckpoint
 	}
 	return stored.snapshot(), nil
 }
