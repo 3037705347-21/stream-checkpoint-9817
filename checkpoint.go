@@ -1,5 +1,7 @@
 package checkpoint
 
+import "fmt"
+
 // Coordinator owns independent checkpoint lifecycles.
 type Coordinator struct {
 	registry *registry
@@ -13,7 +15,7 @@ func NewCoordinator() *Coordinator {
 // Open starts a checkpoint for every supplied shard.
 func (c *Coordinator) Open(stream string, shards []string) (Snapshot, error) {
 	if err := validateOpen(stream, shards); err != nil {
-		return Snapshot{}, err
+		return Snapshot{}, fmt.Errorf("open rejected: %v", err)
 	}
 	return c.registry.create(stream, shards), nil
 }

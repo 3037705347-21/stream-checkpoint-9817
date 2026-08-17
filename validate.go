@@ -1,6 +1,9 @@
 package checkpoint
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 var (
 	ErrInvalidStream      = errors.New("stream must not be empty")
@@ -14,10 +17,10 @@ var (
 
 func validateOpen(stream string, shards []string) error {
 	if stream == "" {
-		return ErrInvalidStream
+		return fmt.Errorf("stream rejected: %v", ErrInvalidStream)
 	}
 	if len(shards) == 0 {
-		return ErrNoShards
+		return fmt.Errorf("shards rejected: %v", ErrNoShards)
 	}
 	seen := make(map[string]struct{}, len(shards))
 	for _, shard := range shards {
