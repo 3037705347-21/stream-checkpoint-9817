@@ -15,7 +15,7 @@ func NewCoordinator() *Coordinator {
 // Open starts a checkpoint for every supplied shard.
 func (c *Coordinator) Open(stream string, shards []string) (Snapshot, error) {
 	if err := validateOpen(stream, shards); err != nil {
-		return Snapshot{}, fmt.Errorf("open rejected: %v", err)
+		return Snapshot{}, fmt.Errorf("open rejected: %w", err)
 	}
 	return c.registry.create(stream, shards), nil
 }

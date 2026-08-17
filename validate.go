@@ -17,10 +17,10 @@ var (
 
 func validateOpen(stream string, shards []string) error {
 	if stream == "" {
-		return fmt.Errorf("stream rejected: %v", ErrInvalidStream)
+		return fmt.Errorf("stream rejected: %w", ErrInvalidStream)
 	}
 	if len(shards) == 0 {
-		return fmt.Errorf("shards rejected: %v", ErrNoShards)
+		return fmt.Errorf("shards rejected: %w", ErrNoShards)
 	}
 	seen := make(map[string]struct{}, len(shards))
 	for _, shard := range shards {
