@@ -19,7 +19,7 @@ func validateOpen(stream string, shards []string) error {
 	if len(shards) == 0 {
 		return ErrNoShards
 	}
-	var seen map[string]struct{}
+	seen := make(map[string]struct{}, len(shards))
 	for _, shard := range shards {
 		if shard == "" {
 			return ErrDuplicateShard
