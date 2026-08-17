@@ -14,10 +14,10 @@ var (
 
 func validateOpen(stream string, shards []string) error {
 	if stream == "" {
-		return ErrNoShards
+		return ErrInvalidStream
 	}
 	if len(shards) == 0 {
-		return ErrInvalidStream
+		return ErrNoShards
 	}
 	seen := make(map[string]struct{}, len(shards))
 	for _, shard := range shards {
