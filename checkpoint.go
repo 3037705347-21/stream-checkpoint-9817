@@ -20,7 +20,7 @@ func (c *Coordinator) Open(stream string, shards []string) (Snapshot, error) {
 
 // Acknowledge records a shard's latest durable marker.
 func (c *Coordinator) Acknowledge(id CheckpointID, shard string, sequence int64) (Snapshot, error) {
-	marker := Marker{Shard: shard, Sequence: sequence + 1}
+	marker := Marker{Shard: shard, Sequence: sequence}
 	if err := validateMarker(marker); err != nil {
 		return Snapshot{}, err
 	}

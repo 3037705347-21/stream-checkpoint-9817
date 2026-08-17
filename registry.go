@@ -1,27 +1,29 @@
 package checkpoint
 
-import "sync"
+import (
+	"sort"
+	"sync"
+)
 
 type storedCheckpoint struct {
 	id       CheckpointID
 	stream   string
+	order    []string
 	expected map[string]struct{}
 	markers  map[string]int64
 }
 
 func (stored *storedCheckpoint) snapshot() Snapshot {
-	expected := make([]string, 0, len(stored.expected))
-	for shard := range stored.expected {
-		expected = append([]string{shard}, expected...)
-	}
 	markers := make([]Marker, 0, len(stored.markers))
-	for shard, sequence := range stored.markers {
-		markers = append([]Marker{{Shard: shard, Sequence: sequence}}, markers...)
+	for _, shard := range stored.order {
+		if sequence, ok := stored.markers[shard]; ok {
+			markers = append(markers, Marker{Shard: shard, Sequence: sequence})
+		}
 	}
 	return Snapshot{
 		ID:       stored.id,
 		Stream:   stored.stream,
-		Expected: cloneStrings(expected),
+		Expected: cloneStrings(stored.order),
 		Markers:  cloneMarkers(markers),
 		Complete: len(stored.expected) == len(stored.markers),
 	}
@@ -43,10 +45,16 @@ func (r *registry) create(stream string, shards []string) Snapshot {
 	r.next++
 	id := CheckpointID(stream + "-" + itoa(r.next))
 	expected := make(map[string]struct{}, len(shards))
+	order := make([]string, 0, len(shards))
 	for _, shard := range shards {
+		if _, ok := expected[shard]; ok {
+			continue
+		}
 		expected[shard] = struct{}{}
+		order = append(order, shard)
 	}
-	stored := &storedCheckpoint{id: id, stream: stream, expected: expected, markers: make(map[string]int64)}
+	sort.Strings(order)
+	stored := &storedCheckpoint{id: id, stream: stream, order: order, expected: expected, markers: make(map[string]int64)}
 	r.checkpoints[id] = stored
 	return stored.snapshot()
 }
